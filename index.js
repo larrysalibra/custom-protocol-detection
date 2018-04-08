@@ -207,8 +207,14 @@ module.exports = function(uri, failCb, successCb, unsupportedCb) {
             console.log('openUriUsingFirefox')
             openUriUsingFirefox(uri, failCallback, successCallback);
         } else if (browser.isChrome) {
-            console.log('openUriWithTimeoutHack')
-            openUriWithTimeoutHack(uri, failCallback, successCallback);
+            // Check for ChromeOS
+            if (/\bCrOS\b/.test(navigator.appVersion)) {
+                console.log('unsupported OS')
+                unsupportedCallback()
+            } else {
+                console.log('openUriWithTimeoutHack')
+                openUriWithTimeoutHack(uri, failCallback, successCallback);
+            }
         } else if (browser.isIE) {
             console.log('openUriUsingIEInOlderWindows')
             openUriUsingIEInOlderWindows(uri, failCallback, successCallback);
